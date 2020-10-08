@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Home Page</title>
+	<script type="text/javascript" src="js/myutility.js"></script>
+</head>
+<body>
+	<!-- 使用瀏覽器開啟 -->
+	<h1 id="maintitle"></h1>
+	<h3 id="info"></h3>
+	<p id="server">伺服器網址: </p>
+	<p id="paths">服務數目: </p>
+	
+	<script type="text/javascript">
+		var URL = "https://data.ntpc.gov.tw/openapi/units/1130000";  //static json source
+		jsonrequest(URL, homepaging);
+					
+		function homepaging(xhttp){
+			alert("working!");
+			var jsons = xhttp.response;			    
+		    document.getElementById("maintitle").innerHTML = jsons["info"]["description"];
+		    document.getElementById("info").innerHTML = ("version: "+ jsons["openapi"]);
+		    document.getElementById("server").innerHTML += jsons["servers"][0]["url"];
+		    document.getElementById("paths").innerHTML += "...";
+		}
+	</script>
+	
+</body>
+</html>

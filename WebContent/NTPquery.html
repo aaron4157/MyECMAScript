@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>~home page~</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="js/myutility.js"></script>
+
+<script type="text/javascript">
+$(function(){
+
+	var jqxhr = $.ajax({
+		url:"https://data.ntpc.gov.tw/api/datasets/71CD1490-A2DF-4198-BEF1-318479775E8A/json?page=0&size=10",
+		dataType:"json"      
+		})
+		.done(function(data, status, xhr){
+  			alert(status);
+		})
+		.fail(function(xhr, status, msg){
+			alert('fail: '+ msg);
+			//error: jQueryxxx is not called back; status=0
+		});
+
+	jqxhr.always(function(a, status, b){
+  		$('#test').text( JSON.stringify(a) );
+	});	
+
+});
+</script>
+</head>
+<body>
+	<h1>新北市 Youbike 動態查詢</h1>
+	<!-- 
+	<button type="button" id="query">點我查詢</button>
+	 -->
+	<p id="note"></p>
+	<div id="test"></div><!-- jsonp狀態非真 可能是瀏覽器沒有捕獲 -->
+	<table border="1">
+		<thead></thead>
+		<tr>
+			<td>站點編號</td>
+			<td>站點名稱</td>
+			<td>車輛數</td>
+			<td>空位數</td>
+			<td>站點行政區</td>
+			<td>站點街道名</td>
+			<td>回報時間</td>						
+		</tr>
+		
+	</table>
+</body>
+</html>
