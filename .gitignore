@@ -1,5 +1,9 @@
-.settings/
-build/
-.class
+# dependent directories
+.settings
+build
 .classpath
-/WebContent/ntpqry.jsp
+# temporary files
+*.class
+
+# incomplete files
+WebContent/ntpqry.jsp
