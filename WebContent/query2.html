@@ -7,61 +7,65 @@
 <script type="text/javascript" src="js/myutility.js"></script>
 
 <script type="text/javascript">
-var dump, mylat, mylng;
+var mylat, mylng;
+// ajax 在這裡設定 快取管理為"詢問更新"
+$.ajaxSetup({
+	url:"https://tcgbusfs.blob.core.windows.net/blobyoubike/YouBikeTP.json",
+	type:"GET",
+	//scriptCharset:"UTF-8",
+	error:function(xhr, status, msg){
+		alert('fail:');
+		$('#note').text(JSON.stringify(xhr));
+		$('#note').show();
+	},
+	headers:{
+		"Cache-Control":"no-cache"
+	},
+	global:false
+});
+
 $(function(){
 	
-	var jqxhr = $.ajax({
-		url:"https://tcgbusfs.blob.core.windows.net/blobyoubike/YouBikeTP.json",
-		//type:"GET",
-		//scriptCharset:"UTF-8",
-		dataType:"json",
-		headers:{
-			"Cache-Control":"no-cache"
-		}
-	}).done(function(data, status, xhr){
+	$.getJSON().done(function(data, status, xhr){
 		alert(status);
-		dump = data['retVal'];
-		//$('#note').text(dump);
-		rendtable(dump, function(){return true});
-
+		rendtable(data['retVal'], function(){return true});
 	}).fail(function(xhr, status, msg){
 		alert('fail:');
 		$('#note').text(JSON.stringify(xhr));
 		$('#note').show();
+	}).always(function(data, status, xhr){
+		$('table thead').text("You-Bike 即時資訊");
 	});
-
-	jqxhr.always(function(data, status, xhr){
-		//rendata("test",data);
-		$('table thead').text("台北市You Bike 即時資訊");
-	});
-	
 	
 	$('#refresh').dblclick(function(){		
-		//mylat = parseFloat($('#mylat').val())*Math.PI/180;
-		//mylng = parseFloat($('#mylng').val())*Math.PI/180;
-		//alert(isNearby({"lat":25, "lng":122}));
 		window.location.reload();
 	});
 	
 	$('#distsort').click(function(){
-		$('tr').remove('.dynamic');		
-		rendtable(dump, isDistrict);
+		$('tr').remove('.dynamic');
+		$.getJSON().done(function(data){
+			rendtable(data['retVal'], isDistrict);
+		});
 	});
 	
 	$('#sitesort').click(function(){
 		mylat = parseFloat($('#mylat').val())*Math.PI/180;
 		mylng = parseFloat($('#mylng').val())*Math.PI/180;
-		$('tr').remove('.dynamic');		
-		rendtable(dump, isNearby);
+		$('tr').remove('.dynamic');
+		$.getJSON().done(function(data){
+			rendtable(data['retVal'], isNearby);
+		});
 	});
 
 });
 </script>
+
+
 </head>
 <body>
-	<h1>台北市 Youbike Open API</h1>
+	<h1>台北市 YouBike Open API</h1>
 	<div>
-	<button type="button" id="refresh">點我更新</button><br>
+	<button type="button" id="refresh">雙擊更新</button><br>
 	<label for="mydist">選擇區域</label>
 	<input type="text" id="mydist" value="信義區"><br>
 	<button type="button" id="distsort">定位A</button>
@@ -76,7 +80,7 @@ $(function(){
 	 
  	<div>
  	
-	<p id="note" style="display:none"></p>
+	<p id="note" style="display:none">front-end log</p>
 	<br>
 	<table border='1'>
 		<thead></thead>

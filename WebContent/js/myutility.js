@@ -12,7 +12,8 @@ function jsonrequest(url,cFunction){
 	      cFunction(this); //callback
 	    }
 	  };
-	request.open("GET", url, true);  //asychronous request
+  	//asychronous request
+	request.open("GET", url, true);  
 	//activation
 	request.send();
 }
@@ -38,6 +39,9 @@ function rendtable(jsons, screen){
 	var elem;		
 	
 	for(elem in jsons){
+		//篩選資料
+		if(screen(jsons[elem])){			
+		
 		//產生資料列元素
 		var row = document.createElement('tr');
 		var sno = document.createElement('td');
@@ -65,7 +69,6 @@ function rendtable(jsons, screen){
 		row.appendChild(ar);
 		row.appendChild(mday);
 		
-		if(screen(jsons[elem])){
 			tableItem.appendChild(row);
 		}
 	}
@@ -86,7 +89,7 @@ function isDistrict(item){
 
 function isNearby(item){
 	//convert 1km into angle in rad, then square it
-	const farthest = 1/6371/6371;
+	const farthest = 1*1/6371/6371;
 	var lng1 = parseFloat(item.lng)*Math.PI/180, lat1 = parseFloat(item.lat)*Math.PI/180;
 	var lng0 = this.mylng, lat0 = this.mylat;	
 	var dlng = lng1 - lng0, dlat = lat1 - lat0;

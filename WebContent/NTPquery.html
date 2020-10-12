@@ -7,20 +7,23 @@
 <script type="text/javascript" src="js/myutility.js"></script>
 
 <script type="text/javascript">
+var URL = "https://data.ntpc.gov.tw/api/datasets/71CD1490-A2DF-4198-BEF1-318479775E8A/json?page=0&size=10";
 $(function(){
-
+	
 	var jqxhr = $.ajax({
 		url:"https://data.ntpc.gov.tw/api/datasets/71CD1490-A2DF-4198-BEF1-318479775E8A/json?page=0&size=10",
-		dataType:"json"      
+		dataType:"json",
+		headers:{"Access-Control-Allow-Origin":"*",
+			"Pragma":"no-cache",
+			"Cache-Control":"no-cache, no-store, max-age=0, must-revalidate"}
 		})
 		.done(function(data, status, xhr){
   			alert(status);
 		})
 		.fail(function(xhr, status, msg){
 			alert('fail: '+ msg);
-			//error: jQueryxxx is not called back; status=0
 		});
-
+	//has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource
 	jqxhr.always(function(a, status, b){
   		$('#test').text( JSON.stringify(a) );
 	});	
