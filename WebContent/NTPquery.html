@@ -8,22 +8,25 @@
 
 <script type="text/javascript">
 var URL = "https://data.ntpc.gov.tw/api/datasets/71CD1490-A2DF-4198-BEF1-318479775E8A/json?page=0&size=10";
+window.cFunction = function(data) {
+  console.log(data);
+};
 $(function(){
 	
-	var jqxhr = $.ajax({
-		url:"https://data.ntpc.gov.tw/api/datasets/71CD1490-A2DF-4198-BEF1-318479775E8A/json?page=0&size=10",
-		dataType:"json",
-		headers:{"Access-Control-Allow-Origin":"*",
-			"Pragma":"no-cache",
-			"Cache-Control":"no-cache, no-store, max-age=0, must-revalidate"}
+	var jqxhr = $.get({
+		url:"https://data.ntpc.gov.tw/api/datasets/71CD1490-A2DF-4198-BEF1-318479775E8A/json",
+		data:{page:0, size:10}
+		dataType:"jsonp",
+		jsonpCallback:"cFunction",
+		headers:{"Access-Control-Allow-Origin":"*","Cache-Control":"no-cache"}
 		})
 		.done(function(data, status, xhr){
   			alert(status);
-		})
+		})  //has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource
 		.fail(function(xhr, status, msg){
 			alert('fail: '+ msg);
 		});
-	//has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource
+
 	jqxhr.always(function(a, status, b){
   		$('#test').text( JSON.stringify(a) );
 	});	
@@ -37,7 +40,7 @@ $(function(){
 	<button type="button" id="query">點我查詢</button>
 	 -->
 	<p id="note"></p>
-	<div id="test"></div><!-- jsonp狀態非真 可能是瀏覽器沒有捕獲 -->
+	<div id="test"></div>
 	<table border="1">
 		<thead></thead>
 		<tr>
