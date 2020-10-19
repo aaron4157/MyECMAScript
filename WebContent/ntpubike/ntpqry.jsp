@@ -11,9 +11,9 @@ var mylat, mylng;
 
 $(function(){
 	//alert(new Date());
-	<% pageContext.setAttribute( "dump", request.getAttribute("data") ); %>
-
-	rendtable(dump, function(){return true});
+	//var dump = ${data};
+	
+	rendtable(${data}, function(){return true});
 	
 	$('#refresh').dblclick(function(){		
 		document.location.href="/MyECMAScript/ntpubike/json";
@@ -21,22 +21,28 @@ $(function(){
 	
 	$('#distsort').click(function(){
 		$('tr').remove('.dynamic');		
-		rendtable(dump, isDistrict);
+		rendtable(${data}, isDistrict);
 	});
 	
 	$('#sitesort').click(function(){
 		mylat = parseFloat($('#mylat').val())*Math.PI/180;
 		mylng = parseFloat($('#mylng').val())*Math.PI/180;
 		$('tr').remove('.dynamic');		
-		rendtable(dump, isNearby);
+		rendtable(${data}, isNearby);
 	});
 });
 </script>
+<style type="text/css">
+	.dynamic:hover {
+		background-color: yellow;
+	}
+</style>
+
 
 <title>YouBike 即時資訊</title>
 </head>
 <body>
-	<h1>新北市 Youbike 動態查詢</h1>
+	<h1>新北市 YouBike 動態查詢</h1>
 	
 	<div>
 	<button type="button" id="refresh">雙擊更新</button><br>

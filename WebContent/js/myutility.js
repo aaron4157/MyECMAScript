@@ -89,6 +89,7 @@ function isDistrict(item){
 
 function isNearby(item){
 	//convert 1km into angle in rad, then square it
+	//this approximattion underscores real (arc) distance > 10km
 	const farthest = 1*1/6371/6371;
 	var lng1 = parseFloat(item.lng)*Math.PI/180, lat1 = parseFloat(item.lat)*Math.PI/180;
 	var lng0 = this.mylng, lat0 = this.mylat;	

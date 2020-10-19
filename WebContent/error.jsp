@@ -7,7 +7,7 @@
 <title>OOPS!</title>
 </head>
 <body>
-<h1><%=request.getAttribute("msg") %></h1>
-<h2 style="color:red"><%=exception.getMessage() %></h2>
+<h1 style="color:red">Something goes wrong!</h1>
+<p><%=exception.getMessage() %></p>
 </body>
 </html>
