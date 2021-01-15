@@ -4,22 +4,20 @@ function greet(){
 	alert("Hello, Java script!");
 }
 
+// A standard http request
 function jsonrequest(url,cFunction){	
-	var request = new XMLHttpRequest();
+	let request = new XMLHttpRequest();
 	request.responseType = "json";
 	request.onreadystatechange = function() {
 	    if (this.readyState == 4 && this.status == 200) {
-	      cFunction(this); //callback
+	      cFunction(this); //send xhr object to callback function
 	    }
-	  };
-  	//asychronous request
+	};
 	request.open("GET", url, true);  
-	//activation
 	request.send();
 }
 
 //A simple output method
-
 function rendata(a, jsons){
 	var item, x='content: ';
 	
@@ -27,30 +25,29 @@ function rendata(a, jsons){
 		x+=JSON.stringify(jsons[item])+'<br>';
 	}
 	document.getElementById(a).innerHTML = x;
+	document.getElementById(a).style = "";
 }
 
 //Output bike data as table
- 
 function rendtable(jsons, screen){
 	
-
-	var tableItem = document.querySelector('table tbody');	//css selector not for IE8-
-	//var tableItem = document.getElementsByTagName('table')[0];
-	var elem;		
+	const tableItem = document.querySelector('table tbody');	//css selector not for IE8-
+	//let tableItem = document.getElementsByTagName('table')[0];
+	let elem;		
 	
 	for(elem in jsons){
 		//篩選資料
 		if(screen(jsons[elem])){			
 		
 		//產生資料列元素
-		var row = document.createElement('tr');
-		var sno = document.createElement('td');
-		var sna = document.createElement('td');
-		var sbi = document.createElement('td');
-		var bemp = document.createElement('td');		
-		var sarea = document.createElement('td');
-		var ar = document.createElement('td');				
-		var mday = document.createElement('td');
+		let row = document.createElement('tr');
+		let sno = document.createElement('td');
+		let sna = document.createElement('td');
+		let sbi = document.createElement('td');
+		let bemp = document.createElement('td');		
+		let sarea = document.createElement('td');
+		let ar = document.createElement('td');				
+		let mday = document.createElement('td');
 		//填入資料
 		sno.innerHTML = jsons[elem].sno;		
 		sna.innerHTML = jsons[elem].sna;
@@ -80,21 +77,22 @@ function cleantable(){
 }
 
 //district filter
-
 function isDistrict(item){
 	return item.sarea === document.getElementById('mydist').value;
 }
 
-//distance filer
-
+//distance filter
 function isNearby(item){
 	//convert 1km into angle in rad, then square it
 	//this approximattion underscores real (arc) distance > 10km
 	const farthest = 1*1/6371/6371;
-	var lng1 = parseFloat(item.lng)*Math.PI/180, lat1 = parseFloat(item.lat)*Math.PI/180;
-	var lng0 = this.mylng, lat0 = this.mylat;	
-	var dlng = lng1 - lng0, dlat = lat1 - lat0;
-	var seperaxn = dlng * dlng + Math.cos(lat0) * Math.cos(lat0) * dlat * dlat ;
+	let lng1 = parseFloat(item.lng)*Math.PI/180, lat1 = parseFloat(item.lat)*Math.PI/180;
+	let lng0 = this.mylng, lat0 = this.mylat;	
+	let dlng = lng1 - lng0, dlat = lat1 - lat0;
+	let seperaxn = dlng * dlng + Math.cos(lat0) * Math.cos(lat0) * dlat * dlat ;
 	return seperaxn < farthest ;
 }
+
+// table paginatior
+// REF:https://www.cssscript.com/demo/simple-table-paginator-pure-javascript/
 

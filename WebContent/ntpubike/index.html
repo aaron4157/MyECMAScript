@@ -12,20 +12,24 @@
 	<h3 id="info"></h3>
 	<p id="server">伺服器網址: </p>
 	<p id="paths">服務數目: </p>
-	<button onclick="goTo()">查詢即時資訊</button>
-	
+	<button onclick="goTo()">查詢UBike即時資訊</button>
+	<p>
+	<a href="../NTPquery.html">NG!!</a>
+	</p>
 	
 	<script type="text/javascript">
-		var URL = "https://data.ntpc.gov.tw/openapi/units/1130000";  //static json source
+		const URL = "https://data.ntpc.gov.tw/openapi/units/1130000";  //static json source
+		// ececute once script loaded
 		jsonrequest(URL, homepaging);
 					
 		function homepaging(xhttp){
+			//render response object
 			alert("Welcome!");
-			var jsons = xhttp.response;			    
+			let jsons = xhttp.response;			    
 		    document.getElementById("maintitle").innerHTML = jsons["info"]["description"];
 		    document.getElementById("info").innerHTML = ("version: "+ jsons["openapi"]);
 		    document.getElementById("server").innerHTML += jsons["servers"][0]["url"];
-		    document.getElementById("paths").innerHTML += "...";
+		    document.getElementById("paths").innerHTML += Object.keys(jsons.paths).length;
 		}
 		
 		function goTo(){
