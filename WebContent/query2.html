@@ -2,9 +2,15 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>TPE UBike instant</title>
+<title>TPE UBike instant(JS++)</title>
+<!-- included library -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="js/table-sortable.js"></script>
+<link type="text/css" rel="stylesheet" href="css/styles.css"/>
+<link type="text/css" rel="stylesheet" href="css/table-sortable.css"/>
+<!-- user library -->
 <script type="text/javascript" src="js/myutility.js"></script>
+
 
 <script type="text/javascript">
 var mylat, mylng;
@@ -24,51 +30,96 @@ $.ajaxSetup({
 	global:false
 });
 
+
+
+
 $(function(){
+	
+	const table = $('#table-sortable').tableSortable({
+	    data: [],
+	    columns: {},
+	    rowsPerPage: 15,
+	    pagination: true,
+	    searchField: '#searchField'
+	});
+	const colA = {
+	    	'sno':"站點編號",
+	    	'sna':"站點名稱",
+	    	'sbi':"車輛數",
+	    	'bemp':"空位數",
+	    	'sarea':"站點行政區",
+	    	'ar':"站點街道",
+	    	'mday':"回報時間"
+	    };
 	
 	$.getJSON().done(function(data, status, xhr){
 		alert(status);
-		rendtable(data['retVal'], function(){return true});
-	}).fail(function(xhr, status, msg){
-		alert('fail:');
-		$('#note').text(JSON.stringify(xhr));
-		$('#note').show();
+		//rendtable(data['retVal'], function(){return true});
+		// convert set into array
+		let dataArray = $.map(data['retVal'], function(value, index){
+			return [value];
+		});
+	    //Set new data on table, columns is optional.
+	    table.setData(dataArray, colA);
 	}).always(function(data, status, xhr){
 		$('table thead').text("You-Bike 即時資訊");
 	});
 	
+	
+	
 	$('#refresh').dblclick(function(){		
 		window.location.reload();
+		// It will distroy and create table from start.
+		//table.refresh(true); 
+		
 	});
 	
 	$('#distsort').click(function(){
-		$('tr').remove('.dynamic');
+		//$('tr').remove('.dynamic');
 		$.getJSON().done(function(data){
-			rendtable(data['retVal'], isDistrict);
+			//rendtable(data['retVal'], isDistrict);
+			let dataArray = $.map(data['retVal'], function(value, index){
+				return [value];
+			})
+			dataArray = dataArray.fiter(function(item, index, array){
+				return isDistrict(item);
+			});
+		    //Set new data on table, columns is optional.
+		    table.setData(dataArray, colA);
 		});
 	});
 	
 	$('#sitesort').click(function(){
-		mylat = parseFloat($('#mylat').val())*Math.PI/180;
-		mylng = parseFloat($('#mylng').val())*Math.PI/180;
-		$('tr').remove('.dynamic');
+		//mylat = parseFloat($('#mylat').val())*Math.PI/180;
+		//mylng = parseFloat($('#mylng').val())*Math.PI/180;
+		//$('tr').remove('.dynamic');
+		
 		$.getJSON().done(function(data){
-			rendtable(data['retVal'], isNearby);
+			//rendtable(data['retVal'], isNearby);
+			let dataArray = $.map(data['retVal'], function(value, index){
+				return [value];
+			})
+			dataArray = dataArray.filter(function(item, index, array){
+				mylat = parseFloat($('#mylat').val())*Math.PI/180;
+				mylng = parseFloat($('#mylng').val())*Math.PI/180;
+				return isNearby(item);
+			});
+		    //Set new data on table, columns is optional.
+		    table.setData(dataArray, colA);
 		});
+	});
+
+	$('#changeRows').on('change', function() {
+		  table.updateRowsPerPage(parseInt($(this).val(), 10));
 	});
 
 });
 </script>
 
-<style type="text/css">
-	.dynamic:hover {
-		background-color: yellow;
-	}
-</style>
-
-
 </head>
 <body>
+
+
 	<h1>台北市 YouBike Open API</h1>
 	<div>
 	<button type="button" id="refresh">雙擊更新</button><br>
@@ -76,33 +127,31 @@ $(function(){
 	<input type="text" id="mydist" value="信義區"><br>
 	<button type="button" id="distsort">定位A</button>
 	</div>
-	<div>
+	<div class="buttons">
 	<label for="mylat">我的位置：緯度N</label>
 	<input type="number" id="mylat" value="25.03746"><br>
 	<label for="mylong">我的位置：經度E</label>
 	<input type="number" id="mylng" value="121.564558"><br>
 	<button type="button" id="sitesort">定位B</button>
-	 </div>
+	</div>
 	 
- 	<div>
- 	
-	<p id="note" style="display:none">front-end log</p>
-	<br>
-	<table border='1'>
-		<thead></thead>
-		<tbody>
-		<tr>
-			<td>站點編號</td>
-			<td>站點名稱</td>
-			<td>車輛數</td>
-			<td>空位數</td>
-			<td>站點行政區</td>
-			<td>站點街道名</td>
-			<td>回報時間</td>
-		</tr>
-		</tbody>
-	</table>
+	 
+	<div class="btn btn3">
+		<p id="note" style="display:none">front-end log</p>	
+	
+	<input type="text" placeholder="我想來點..." id="searchField">
+	<span>資料數/分頁</span>
+	<select name="rowsPerPage" id="changeRows">
+	  <option value="1">1</option>
+	  <option value="5">5</option>
+	  <option value="10">10</option>
+	  <option value="15" selected>15</option>
+	</select>
+	</div> 	
+	<div id="table-sortable">
 	
 	</div>
+	
+
 </body>
 </html>

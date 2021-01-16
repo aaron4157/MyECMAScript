@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>TPE UBike instant(JS+)</title>
+
+<!-- included library -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/paginathing.min.js"></script>
+
+<!-- user defined library -->
+<script type="text/javascript" src="js/myutility.js"></script>
+
+<script type="text/javascript">
+var mylat, mylng;
+// ajax 在這裡設定 快取管理為"詢問更新"
+$.ajaxSetup({
+	url: "https://tcgbusfs.blob.core.windows.net/blobyoubike/YouBikeTP.json",
+	type: "GET",
+	//scriptCharset:"UTF-8",
+	error: function(xhr, status, msg){
+		alert('fail:');
+		$('#note').text(JSON.stringify(xhr));
+		$('#note').show();
+	},
+	headers: {
+		"Cache-Control":"no-cache"
+	},
+	global:false
+});
+
+
+
+
+$(function(){		
+	
+	$.getJSON().done(function(data, status, xhr){
+		alert(status);
+		rendtable(data['retVal'], function(){return true});
+	}).always(function(data, status, xhr){
+		$('table caption').text("台北市You-Bike 即時資訊");
+	 	// paginate an html table
+	    $('table tbody').paginathing({
+	    	perPage: 5,
+    		pageNumbers: true
+    	});
+	 	
+	});
+	
+	
+	
+	$('#refresh').dblclick(function(){		
+		window.location.reload();
+	});
+	
+	$('#distsort').click(function(){
+		$('tr').remove('.dynamic');
+		$('nav').remove('.pagination-container');
+		$.getJSON().done(function(data){
+			rendtable(data['retVal'], isDistrict);
+		}).always(function(data, status, xhr){
+		 	// paginate an html table
+		    $('table tbody').paginathing({
+		    	perPage: 5,
+	    		pageNumbers: true
+		    	});
+
+		});
+	});
+	
+	$('#sitesort').click(function(){
+		mylat = parseFloat($('#mylat').val())*Math.PI/180;
+		mylng = parseFloat($('#mylng').val())*Math.PI/180;
+		$('tr').remove('.dynamic');
+		$('nav').remove('.pagination-container');
+		$.getJSON().done(function(data){
+			rendtable(data['retVal'], isNearby);
+		});
+	});
+
+
+});
+</script>
+
+<style type="text/css">
+	.dynamic:hover {
+		background-color: yellow;
+	}
+</style>
+
+
+</head>
+<body>
+
+
+	<h1>台北市 YouBike Open API</h1>
+	<div>
+	<button type="button" id="refresh">雙擊更新</button><br>
+	<label for="mydist">選擇區域</label>
+	<input type="text" id="mydist" value="信義區"><br>
+	<button type="button" id="distsort">定位A</button>
+	</div>
+	<div class="buttons">
+	<label for="mylat">我的位置：緯度N</label>
+	<input type="number" id="mylat" value="25.03746"><br>
+	<label for="mylong">我的位置：經度E</label>
+	<input type="number" id="mylng" value="121.564558"><br>
+	<button type="button" id="sitesort">定位B</button>
+	</div>
+	 
+	 
+ 	<div class="conatiner">
+	 	<p id="note" style="display:none">front-end log</p>		 	
+		
+		<div id="paginated">
+		<table class="table table-bordered">
+			<caption></caption>
+			<thead>
+			<tr>
+				<td>站點編號</td>
+				<td>站點名稱</td>
+				<td>車輛數</td>
+				<td>空位數</td>
+				<td>站點行政區</td>
+				<td>站點街道名</td>
+				<td>回報時間</td>
+			</tr>
+			</thead>
+			<tbody>
+			
+			</tbody>
+		</table>
+		</div>				
+	</div>
+	
+
+</body>
+</html>

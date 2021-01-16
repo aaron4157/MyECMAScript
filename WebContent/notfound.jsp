@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" isErrorPage="true"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,9 +8,9 @@
 </head>
 <body>
 <h1>WHY!</h1>
-<h2>No such page or action for the url</h2>
+<h2>No such page or action for the url...</h2>
 <p>
-<a href="/index.html">回首頁</a>
+<a href="/MyECMAScript">回首頁</a>
 </p>
 </body>
 </html>

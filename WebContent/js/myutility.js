@@ -93,6 +93,4 @@ function isNearby(item){
 	return seperaxn < farthest ;
 }
 
-// table paginatior
-// REF:https://www.cssscript.com/demo/simple-table-paginator-pure-javascript/
 

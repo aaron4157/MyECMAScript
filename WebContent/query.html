@@ -2,38 +2,54 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>TPE UBike Instant</title>
+<title>TPE UBike Instant(JS)</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" src="js/myutility.js"></script>
+<script type="text/javascript" src="js/paginator.js"></script>
+<script type="text/javascript" src="js/table.js"></script>
+<link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
+
+<script type="text/javascript">
+window.addEventListener("load", function () {
+	jsonrequest("https://tcgbusfs.blob.core.windows.net/blobyoubike/YouBikeTP.json", function(){return true;});
+    let box = paginator({
+        table: document.getElementById("table_box_bootstrap").getElementsByTagName("table")[0],
+        box_mode: "list",
+        disable: false
+    });
+    box.className = "box";
+    document.getElementById("table_box_bootstrap").appendChild(box);
+}, false);
+</script>
 
 <script type="text/javascript">
 var dump, mylat, mylng;
 $(function(){
 	
-	var jqxhr = $.ajax({
-		url:"https://tcgbusfs.blob.core.windows.net/blobyoubike/YouBikeTP.json",
-		//type:"GET",
-		//scriptCharset:"UTF-8",
-		dataType:"json",
-		headers:{
-			"Cache-Control":"no-cache"
-		}
-	}).done(function(data, status, xhr){
-		alert(status);
-		dump = data['retVal'];
-		//$('#note').text(dump);
-		rendtable(dump, function(){return true});
+// 	var jqxhr = $.ajax({
+// 		url:"https://tcgbusfs.blob.core.windows.net/blobyoubike/YouBikeTP.json",
+// 		//type:"GET",
+// 		//scriptCharset:"UTF-8",
+// 		dataType:"json",
+// 		headers:{
+// 			"Cache-Control":"no-cache"
+// 		}
+// 	}).done(function(data, status, xhr){
+// 		alert(status);
+// 		dump = data['retVal'];
+// 		//$('#note').text(dump);
+// 		rendtable(dump, function(){return true});
 
-	}).fail(function(xhr, status, msg){
-		alert('fail:');
-		$('#note').text(JSON.stringify(xhr));
-		$('#note').show();
-	});
+// 	}).fail(function(xhr, status, msg){
+// 		alert('fail:');
+// 		$('#note').text(JSON.stringify(xhr));
+// 		$('#note').show();
+// 	});
 
-	jqxhr.always(function(data, status, xhr){
-		//rendata("test",data);
-		$('table thead').text("台北市You Bike 即時資訊");
-	});
+// 	jqxhr.always(function(data, status, xhr){
+// 		//rendata("test",data);
+// 		$('table thead').text("台北市You Bike 即時資訊");
+// 	});
 	
 	
 	$('#refresh').dblclick(function(){		
@@ -74,9 +90,9 @@ $(function(){
 	<button type="button" id="sitesort">定位B</button>
 	 </div>
 	 
- 	<div>
+ 	<div id="table_box_bootstrap">
  	
-	<p id="note" style="display:none"></p>
+	<p id="note" style="display:none">front-end log</p>
 	<br>
 	<table border='1'>
 		<thead></thead>
