@@ -50,7 +50,7 @@ $(function(){
 	$('#distsort').click(function(){
 		//$('tr').remove('.dynamic');			
 		//rendtable({data}, isDistrict);
-		table.setData(dataArray.fiter(function(item, index, array){
+		table.setData(dataArray.filter(function(item, index, array){
 			return isDistrict(item);
 		}), colA);
 	});
@@ -68,7 +68,7 @@ $(function(){
 	});
 	
 	$('#changeRows').on('change', function() {
-		  table.updateRowsPerPage(parseInt($(this).val(), 10));
+		  table.updateRowsPerPage(parseInt($(this).val(), 15));
 	});
 });
 </script>
@@ -76,10 +76,6 @@ $(function(){
 	table, th, td {
 	  border: 1px solid black;
 	}
-	.dynamic:hover {
-		background-color: yellow;
-	}
-	
 </style>
 
 
@@ -108,9 +104,9 @@ $(function(){
 	<span>資料數/分頁</span>
 	<select name="rowsPerPage" id="changeRows">
 	  <option value="1">1</option>
-	  <option value="5" selected>5</option>
+	  <option value="5">5</option>
 	  <option value="10">10</option>
-	  <option value="15">15</option>
+	  <option value="15" selected>15</option>
 	</select>
 	</div> 	
 	<div id="table-sortable">

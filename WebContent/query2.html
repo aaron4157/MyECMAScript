@@ -81,7 +81,7 @@ $(function(){
 			let dataArray = $.map(data['retVal'], function(value, index){
 				return [value];
 			})
-			dataArray = dataArray.fiter(function(item, index, array){
+			dataArray = dataArray.filter(function(item, index, array){
 				return isDistrict(item);
 			});
 		    //Set new data on table, columns is optional.
@@ -110,11 +110,17 @@ $(function(){
 	});
 
 	$('#changeRows').on('change', function() {
-		  table.updateRowsPerPage(parseInt($(this).val(), 10));
+		  table.updateRowsPerPage(parseInt($(this).val(), 15));
 	});
 
 });
 </script>
+
+<style type="text/css">
+	table, th, td {
+	  border: 1px solid black;
+	}
+</style>
 
 </head>
 <body>
